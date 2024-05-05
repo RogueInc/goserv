@@ -3,9 +3,11 @@ package main
 import (
 	"context"
 	"log"
+	"os"
 	"net/http"
 	"time"
 
+	"github.com/joho/godotenv"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
@@ -25,7 +27,12 @@ var collection *mongo.Collection
 
 func main() {
 
-	uri := "mongodb+srv://finsig:finsig404@cluster0.k8say3c.mongodb.net/"
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
+	uri := os.Getenv("MONGODB_URI")
 	clientOptions := options.Client().ApplyURI(uri)
 	r := gin.Default()
 
